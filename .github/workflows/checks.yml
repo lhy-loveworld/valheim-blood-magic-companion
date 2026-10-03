@@ -1,0 +1,21 @@
+name: Offline checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '8.0.x'
+      - name: Cost and XP regression checks (no game files)
+        run: dotnet run --project tests/Checks.csproj --configuration Release
+      - name: Source and package metadata checks
+        run: python3 scripts/check_source.py

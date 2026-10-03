@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="CostChecks.cs" />
+    <Compile Include="XpChecks.cs" />
+    <Compile Include="../src/CostModel.cs" Link="CostModel.cs" />
+    <Compile Include="../src/ReceiptLedger.cs" Link="ReceiptLedger.cs" />
+  </ItemGroup>
+</Project>

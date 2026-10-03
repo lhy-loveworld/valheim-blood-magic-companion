@@ -1,0 +1,17 @@
+build/
+dist/
+**/bin/
+**/obj/
+**/__pycache__/
+*.pyc
+*.dll
+*.exe
+*.pdb
+*.zip
+*.cfg
+*.log
+.env
+.env.*
+.vs/
+.idea/
+.DS_Store
