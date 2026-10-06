@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1
+
+- Fix T.W.I.G. training excluding vanilla summoned skeletons: Skeleton_Friendly uses faction Players (0), not PlayerSpawned (11).
+- Keep the exact summon prefab, tame, ownership, life and dummy-only visibility restrictions.
+- Extract a minimal test fixture from the installed game prefabs and add an asset-verification script. The new real-faction regression fails against 1.2.0 and passes with this correction.
+- Preserve existing configuration; the fixed in-game behavior still requires live verification.
+
 ## 1.2.0
 
 - Add opt-in `Summons/AttackTrainingDummy` for summoned melee and archer skeletons.

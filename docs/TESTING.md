@@ -29,3 +29,10 @@ Enable Logging/Diagnostics to distinguish local reward, redirected reward, recei
 - Transfer skeleton ownership to an unmodded or disabled peer and back: expect vanilla behavior there and training only under the enabled owner. Test an unmodded dedicated server and optional modded Linux owner.
 - Toggle stamina and caster XP independently, with training both enabled and disabled. Confirm existing behavior remains independent.
 - Inspect BepInEx logs for patch errors. Static and simulated-API checks do not establish actual Harmony/Unity compatibility.
+
+
+## 1.2.1 real-prefab regression and live retest
+
+The 1.2.0 in-game report was melee and archer skeletons wandering without attacking T.W.I.G., despite the enabled setting and successful patch-install log. Asset inspection found Skeleton_Friendly uses faction Players (0); the 1.2.0 eligibility filter incorrectly required PlayerSpawned (11). The extracted-faction regression reproduced this exclusion before the fix.
+
+After importing 1.2.1, keep Summons/AttackTrainingDummy=true and restart. Confirm the log says 1.2.1 and AttackTrainingDummy=True, then repeat the open-ground melee and archer test from above. Verify actual attacks, ordinary-enemy priority and obstacle blocking. In multiplayer, test while a modded and enabled computer owns the skeleton. The offline regression establishes the faction fix, not the complete Unity behavior.

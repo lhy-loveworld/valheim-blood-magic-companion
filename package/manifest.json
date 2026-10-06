@@ -1,6 +1,6 @@
 {
   "name": "BloodMagicCompanion",
-  "version_number": "1.2.0",
+  "version_number": "1.2.1",
   "website_url": "https://github.com/lhy-loveworld/valheim-blood-magic-companion",
   "description": "Configurable stamina-powered Blood Magic, original health costs, caster shield XP, and optional summoned-skeleton T.W.I.G. training. Server optional; creature-owner and mixed-client limitations documented.",
   "dependencies": [

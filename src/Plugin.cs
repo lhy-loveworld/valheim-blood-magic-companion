@@ -3,7 +3,7 @@ using System.Reflection;
 using BepInEx;
 using HarmonyLib;
 
-[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.2.1.0")]
 namespace BloodMagicCompanion
 {
     [BepInPlugin(Id, "Blood Magic Companion", Version)]
@@ -12,7 +12,7 @@ namespace BloodMagicCompanion
     public sealed class Plugin : BaseUnityPlugin
     {
         public const string Id = "local.valheim.bloodmagiccompanion";
-        public const string Version = "1.2.0";
+        public const string Version = "1.2.1";
         private Harmony harmony;
 
         private void Awake()

@@ -28,7 +28,8 @@ namespace BloodMagicCompanion
         {
             return Active && Prefab(character, "Skeleton_Friendly") && character.IsOwner() &&
                 character.IsTamed() && !character.IsDead() &&
-                character.GetFaction() == Character.Faction.PlayerSpawned;
+                // Skeleton_Friendly belongs to Players (0), not PlayerSpawned (11).
+                character.GetFaction() == Character.Faction.Players;
         }
         internal static bool IsDummy(Character character)
         {

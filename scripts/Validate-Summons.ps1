@@ -24,7 +24,8 @@ $find = @($ai.Methods | Where-Object { $_.Name -eq 'FindEnemy' -and $_.Parameter
 Assert ($find.Count -eq 1 -and $find[0].ReturnType.FullName -eq 'Character') 'Fallback patch target matches'
 Assert (@($ai.Fields | Where-Object { $_.Name -eq 'm_character' -and $_.FieldType.FullName -eq 'Character' }).Count -eq 1) 'Injected observer field matches'
 $faction = $character.NestedTypes | Where-Object Name -eq 'Faction'
-Assert (@($faction.Fields | Where-Object Name -in @('PlayerSpawned','TrainingDummy')).Count -eq 2) 'Narrow faction scope available'
+Assert (@($faction.Fields | Where-Object Name -in @('Players','TrainingDummy')).Count -eq 2) 'Observed faction scope available'
+Assert (($faction.Fields | Where-Object Name -eq 'Players').Constant -eq 0 -and ($faction.Fields | Where-Object Name -eq 'TrainingDummy').Constant -eq 12) 'Prefab fixture faction numbers match installed game enum'
 $feature = $plugin.MainModule.Types | Where-Object Name -eq 'SummonTraining'
 $patches = @($feature.NestedTypes | Where-Object { @($_.CustomAttributes | Where-Object { $_.AttributeType.FullName -eq 'HarmonyLib.HarmonyPatch' }).Count -gt 0 })
 Assert ($patches.Count -eq 2) 'Exactly two summon hooks'

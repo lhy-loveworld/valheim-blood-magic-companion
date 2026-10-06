@@ -28,8 +28,8 @@ internal static class SummonChecks
     }
     internal static void Run()
     {
-        Character s=Make("Skeleton_Friendly(Clone)",Character.Faction.PlayerSpawned,0);
-        Character d=Make("piece_TrainingDummy(Clone)",Character.Faction.TrainingDummy,8);
+        Character s=Make(SummonPrefabFacts.SkeletonName+"(Clone)",(Character.Faction)SummonPrefabFacts.SkeletonFaction,0);
+        Character d=Make(SummonPrefabFacts.DummyName+"(Clone)",(Character.Faction)SummonPrefabFacts.DummyFaction,8);
         Character near=Make("piece_TrainingDummy",Character.Faction.TrainingDummy,4);
         Character enemy=Make("Greydwarf",Character.Faction.Undead,3);
         BaseAI ai=new BaseAI(); s.gameObject.Add(ai);
@@ -37,6 +37,8 @@ internal static class SummonChecks
         SummonTraining.Active=false;
         Check(SummonTraining.SelectTarget(ai,s,null)==null,"disabled keeps vanilla selection");
         SummonTraining.Active=true;
+        Check(SummonTraining.Eligible(s),"actual summoned-skeleton prefab faction is accepted");
+        Check((int)Character.Faction.Players==SummonPrefabFacts.SkeletonFaction && SummonPrefabFacts.DummySkipTarget && !SummonPrefabFacts.SkeletonSkipTarget,"observed prefab facts match the test assumptions");
         Check(SummonTraining.SelectTarget(ai,s,null)==near,"nearest dummy wins even when list is unsorted");
         Check(SummonTraining.SelectTarget(ai,s,enemy)==enemy,"vanilla ordinary enemy wins");
         ai.Target=enemy;
@@ -62,7 +64,7 @@ internal static class SummonChecks
         Check(!SummonTraining.Eligible(s),"dead skeleton excluded");
         s.Dead=false; s.Team=Character.Faction.Undead;
         Check(!SummonTraining.Eligible(s),"wrong faction excluded");
-        s.Team=Character.Faction.PlayerSpawned; s.gameObject.name="Skeleton_Friendly_Custom(Clone)";
+        s.Team=(Character.Faction)SummonPrefabFacts.SkeletonFaction; s.gameObject.name="Skeleton_Friendly_Custom(Clone)";
         Check(!SummonTraining.Eligible(s),"similar prefab names excluded");
         s.gameObject.name="Skeleton_Friendly(Clone)";
         Check(SummonTraining.Eligible(s),"summon scope restored");

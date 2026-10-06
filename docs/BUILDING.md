@@ -35,6 +35,18 @@ In Windows PowerShell from the repository root:
 
 These scripts use Mono.Cecil shipped with BepInEx to inspect metadata and selected IL contracts. They do not execute the game and do not replace playtesting. The public CI does not compile the plugin because it has no game assemblies.
 
+## Verify summon prefab assumptions
+
+The committed `tests/SummonPrefabFacts.cs` contains six factual fields extracted from installed Valheim 1.0.17 prefabs. The regression suite uses the extracted skeleton faction instead of inventing a faction for its test double.
+
+For an independent asset check, use a separate Python environment with UnityPy installed and run:
+
+```text
+python scripts/check_summon_prefabs.py --bundle PATH_TO_SOFTREF_BUNDLE
+```
+
+Find the bundle containing `Assets/Characters/Skeleton/Skeleton_Friendly.prefab` and `Assets/GameElements/Pieces/piece_TrainingDummy.prefab` in the game's `valheim_Data/StreamingAssets/SoftRef/manifest_extended`. The checker compares all six committed fields to the actual assets. Use `--write-fixture` only when intentionally refreshing the fixture after reviewing a game update. UnityPy is an optional inspection dependency, not a plugin or standard CI dependency. Game bundles are not redistributed.
+
 ## Package
 
 ```text

@@ -8,11 +8,11 @@ Three configurable Blood Magic changes in one Valheim mod:
 
 All features can be switched off independently. One DLL, one configuration file.
 
-**Status:** experimental release 1.2.0. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
+**Status:** experimental release 1.2.1. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
 
 ## Install and upgrade
 
-Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.2.0 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.2.0.zip. Avoid enabling both a local import and the public package at once.
+Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.2.1 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.2.1.zip. Avoid enabling both a local import and the public package at once.
 
 For manual installation, replace BloodMagicCompanion.dll inside BepInEx/plugins with the new DLL. Keep only one copy. Close Valheim before updating.
 
@@ -70,11 +70,13 @@ XP is awarded when damage **breaks** a Staff of Protection shield, not on cast, 
 
 The computer simulating a creature can change; summoning it does not guarantee that your client always controls it. A modded server cannot fix a break processed by an unmodded client.
 
-The XP protocol intentionally matches **BloodMagicCasterXP 1.2.0**. A friend using that standalone version can exchange XP messages with this combined mod, though this interoperability has not been tested live. Do not install both on the same client. Standalone 1.0/1.1 or unknown protocols use vanilla fallback.
+The XP protocol intentionally matches **BloodMagicCasterXP 1.2.1**. A friend using that standalone version can exchange XP messages with this combined mod, though this interoperability has not been tested live. Do not install both on the same client. Standalone 1.0/1.1 or unknown protocols use vanilla fallback.
 
 Capability is advertised only while caster XP is enabled. No mandatory-mod network handshake, forced version matching, or mod-version kick is added. Targeted remote rewards require known current ownership; disconnects, respawns, ownership transitions, or missing network data may drop rewards. There is no offline queue or delivery retry. Receipts have bounded duplicate protection; this is a cooperative mod, not an anti-cheat system. Other mods replacing shield, cost, or network methods may interfere.
 
 ## Summoned skeletons and T.W.I.G.
+
+**Upgrade from 1.2.0:** that version incorrectly required the PlayerSpawned faction and excluded vanilla summoned skeletons. Version 1.2.1 fixes this using the actual Players faction. Your existing AttackTrainingDummy setting is retained.
 
 To enable training, set this in the config and restart:
 
@@ -108,11 +110,11 @@ File: local.valheim.bloodmagiccompanion.cfg. Settings apply at startup.
 
 Example: StaminaPerEitr=0.75 changes a 60-eitr spell to 45 stamina before skill scaling. StaffShield=1.2 makes shield conversion 20% more expensive without changing its original health cost. Use decimal points. Invalid settings fall back to defaults or ignore invalid item entries with a warning.
 
-HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.2.0. All configuration is local; it is not enforced on friends.
+HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.2.1. All configuration is local; it is not enforced on friends.
 
 ## Troubleshooting and removal
 
-Check BepInEx/LogOutput.log for Blood Magic Companion 1.2.0 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
+Check BepInEx/LogOutput.log for Blood Magic Companion 1.2.1 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
 
 Report game and mod versions, relevant configuration, other combat mods, and which computer processed the shield break. Share only relevant log excerpts after removing personal information.
 

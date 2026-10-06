@@ -52,9 +52,9 @@ namespace UnityEngine
 }
 public class Character:UnityEngine.Component
 {
-    public enum Faction { Players, PlayerSpawned, TrainingDummy, Undead }
+    public enum Faction { Players=0, Undead=3, PlayerSpawned=11, TrainingDummy=12 }
     public bool Owner=true, Tamed=true, Dead;
-    public Faction Team=Faction.PlayerSpawned;
+    public Faction Team=Faction.Players;
     public static readonly List<Character> All = new List<Character>();
     public bool IsOwner() { return Owner; }
     public bool IsTamed() { return Tamed; }
