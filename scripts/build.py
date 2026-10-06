@@ -7,6 +7,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--game-managed', required=True, type=Path)
 parser.add_argument('--bepinex-core', required=True, type=Path)
 parser.add_argument('--csc', required=True, type=Path)
+parser.add_argument('--dotnet', type=Path, help='Optional .NET host for standalone checks (8 or newer); the plugin still targets the game runtime.')
 parser.add_argument('--output', type=Path, default=Path('build'))
 args = parser.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
@@ -30,9 +31,18 @@ subprocess.run([str(args.csc), '/noconfig', '/nologo', '/target:library', '/opti
     + [compiler_path(path) for path in sorted(source.glob('*.cs'))], check=True)
 checks = args.output / 'BloodMagicCompanionChecks.exe'
 subprocess.run([str(args.csc), '/nologo', '/target:exe', '/optimize+', '/warnaserror+',
-    '/out:' + compiler_path(checks), compiler_path(source / 'CostModel.cs'), compiler_path(source / 'ReceiptLedger.cs')]
+    '/out:' + compiler_path(checks), compiler_path(source / 'CostModel.cs'), compiler_path(source / 'ReceiptLedger.cs'), compiler_path(source / 'SummonTraining.cs')]
     + [compiler_path(path) for path in sorted(tests.glob('*.cs'))], check=True)
-subprocess.run([str(checks.resolve())], check=True)
+if args.dotnet:
+    import json
+    runtime_config = args.output / 'checks.runtimeconfig.json'
+    runtime_config.write_text(json.dumps({'runtimeOptions': {'tfm': 'net8.0',
+        'framework': {'name': 'Microsoft.NETCore.App', 'version': '8.0.0'},
+        'rollForward': 'LatestMajor'}}), encoding='utf-8')
+    subprocess.run([str(args.dotnet), 'exec', '--runtimeconfig', str(runtime_config.resolve()),
+                    str(checks.resolve())], check=True)
+else:
+    subprocess.run([str(checks.resolve())], check=True)
 print('Built:', (args.output / 'BloodMagicCompanion.dll').resolve())
 
 from release_common import manifest, source_fingerprint, digest

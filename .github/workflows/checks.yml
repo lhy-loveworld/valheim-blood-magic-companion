@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '8.0.x'
-      - name: Cost and XP regression checks (no game files)
+      - name: Cost, XP and summon regression checks (no game files)
         run: dotnet run --project tests/Checks.csproj --configuration Release
       - name: Source and package metadata checks
         run: python3 scripts/check_source.py

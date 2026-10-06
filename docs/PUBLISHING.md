@@ -6,13 +6,13 @@ The source repository is https://github.com/lhy-loveworld/valheim-blood-magic-co
 
 The clean source archive matches the public `lhy-loveworld/valheim-blood-magic-companion` project. It contains original mod source, the existing MIT license and notices, build and package scripts, regression tests, an offline-checks workflow, an issue template, and compatibility documentation. It excludes generated DLLs/EXEs, proprietary game assemblies, loader libraries, local profiles/configs, logs, and machine-specific paths.
 
-Use GitHub for source review, issue tracking, contributions, tagged versions, and release downloads. Public CI tests only the pure code; it cannot assert that the Unity plugin works. Use a `v1.1.0` tag when creating a release from the reviewed source. Put built ZIPs in a GitHub Release instead of committing them into source history. The workflow never uploads or publishes packages.
+Use GitHub for source review, issue tracking, contributions, tagged versions, and release downloads. Public CI tests only the pure code; it cannot assert that the Unity plugin works. Use a `v1.2.0` tag when creating a release from the reviewed source. Put built ZIPs in a GitHub Release instead of committing them into source history. The workflow never uploads or publishes packages.
 
 The real repository URL is recorded in package/manifest.json. Use `scripts/package.py --website ...` only if the project moves. Do not upload the existing task folder; use the clean source archive.
 
 ## Thunderstore
 
-Upload **BloodMagicCompanion-1.1.0.zip**, not the source archive. The package has a root manifest.json, README.md, CHANGELOG.md, 256Ã—256 PNG icon, license, validation notes, and plugins/BloodMagicCompanion.dll. The dependency is denikson-BepInExPack_Valheim-5.4.2350. The author/team is selected at upload; the public manifest does not claim a team.
+Upload **BloodMagicCompanion-1.2.0.zip**, not the source archive. The package has a root manifest.json, README.md, CHANGELOG.md, 256Ã—256 PNG icon, license, validation notes, and plugins/BloodMagicCompanion.dll. The dependency is denikson-BepInExPack_Valheim-5.4.2350. The author/team is selected at upload; the public manifest does not claim a team.
 
 1. Sign in and select the existing **qwertyzxcv** team. The listing is https://thunderstore.io/c/valheim/p/qwertyzxcv/BloodMagicCompanion/. Do not create a different team or rename the package for this update.
 2. Open the upload page, select the public ZIP, select your team, choose **Valheim**, and choose the relevant available categories.
@@ -28,6 +28,6 @@ Official references:
 - Upload page: https://thunderstore.io/package/create
 - Updating an existing package: https://wiki.thunderstore.io/mods/updating-a-package
 
-## Updating the existing listing to 1.1.0
+## Updating the existing listing to 1.2.0
 
-Upload BloodMagicCompanion-1.1.0.zip at https://thunderstore.io/package/create, select team qwertyzxcv and community Valheim, retain appropriate categories, and submit. The manifest keeps name BloodMagicCompanion and raises version_number from 1.0.0 to 1.1.0, so this is an update to the existing package. Do not upload either the source ZIP or the LocalMods ZIP. Verify the live listing shows 1.1.0, then update the mod in r2modman and restart Valheim. Review the new StaminaCosts config section; the old health-cost balance keys no longer apply.
+Upload BloodMagicCompanion-1.2.0.zip at https://thunderstore.io/package/create, select team qwertyzxcv and community Valheim, retain appropriate categories, and submit. The manifest keeps name BloodMagicCompanion and raises version_number to 1.2.0, so this is an update to the existing package. Do not upload either the source ZIP or the LocalMods ZIP. Verify the live listing shows 1.2.0, then update the mod in r2modman and restart Valheim. To use skeleton training, set Summons/AttackTrainingDummy=true in the Config editor and restart; it defaults to false.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0
+
+- Add opt-in `Summons/AttackTrainingDummy` for summoned melee and archer skeletons.
+- Prefer ordinary enemies; allow a nearby visible T.W.I.G. as a fallback target.
+- Exclude only the selected dummy's own colliders from the skeleton's visibility ray. Preserve other obstacles and native attack gates.
+- Apply only on the skeleton's simulation owner, without requiring installation on other peers or changing ownership.
+- Default remains off. Built against Valheim 1.0.17; live gameplay remains untested.
+
 ## 1.1.0
 
 - Replace converted eitr health payments with fixed stamina costs; original health cost and its native skill scaling remain unchanged.

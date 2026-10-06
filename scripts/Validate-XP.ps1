@@ -45,7 +45,8 @@ Assert-Contract (@($reward.Body.Instructions | Where-Object { $_.OpCode.Name -in
 Assert-Contract (@($receive.Body.Instructions | Where-Object { "$($_.Operand)" -eq 'System.Int64 ZDOID::get_UserID()' }).Count -eq 0) 'network receiver does not confuse creature creator with owner'
 Assert-Contract (@($receive.Body.Instructions | Where-Object { $_.OpCode.Name -eq 'call' -and "$($_.Operand)" -match 'ReceiptLedger::IsAuthorizedSender' }).Count -eq 1) 'network receiver uses tested current-owner validation'
 Assert-Contract (@($reward.Body.Instructions | Where-Object { "$($_.Operand)" -eq 'Player Player::m_localPlayer' }).Count -eq 1) 'locally simulated creatures have a caster-credit path'
-Assert-Contract ($plugin.Name.Version.ToString() -eq '1.1.0.0') 'combined assembly version is 1.1.0.0'
+$manifest = Get-Content -Raw (Join-Path $PSScriptRoot '../package/manifest.json') | ConvertFrom-Json
+Assert-Contract ($plugin.Name.Version.ToString() -eq ($manifest.version_number + '.0')) 'combined assembly version matches manifest'
 Assert-Contract (@($reward.Body.Instructions | Where-Object { $_.OpCode.Name -eq 'call' -and "$($_.Operand)" -match 'RewardRouting::Select' }).Count -eq 1) 'production reward dispatch uses the tested mixed-client routing policy'
 Assert-Contract (@($reward.Body.Instructions | Where-Object { "$($_.Operand)" -eq 'System.Int64 ZDO::GetOwner()' }).Count -eq 1) 'caster peer is resolved at break time rather than cached at cast time'
 Assert-Contract (@($route.Body.Instructions | Where-Object { "$($_.Operand)" -match 'ZRoutedRpc::m_functions' }).Count -eq 0) 'vanilla forwarding does not require the server to register a mod handler'

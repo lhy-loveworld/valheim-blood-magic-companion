@@ -16,3 +16,16 @@ Use a modded profile with only this combined plugin and BepInEx first. Disable t
 Enable Logging/Diagnostics to distinguish local reward, redirected reward, received reward, and vanilla fallback. A startup success log or a skill integer that did not change is not proof of correct XP delivery. Record results and limitations in VALIDATION.md instead of marking unrun scenarios passed.
 
 11. **Configuration upgrade:** start with a 1.0.0 config with HealthCosts/Enabled=false, then verify the first new StaminaCosts/Enabled is false. Set the new entry true and verify it overrides the legacy false. Old health rate/multiplier keys must have no gameplay effect. Verify invalid numeric/per-staff values warn and fall back.
+
+
+## 1.2.0 skeleton training acceptance (not yet run)
+
+- Leave Summons/AttackTrainingDummy=false: verify melee and archer AI matches vanilla, including retaliation.
+- Enable it and restart. In open terrain with no ordinary enemies, summon one melee skeleton and one archer near T.W.I.G. Confirm both acquire and repeatedly attack it without requiring provocation.
+- Put a wall or another dummy between the skeleton and target: confirm it does not see through the obstacle. Remove the obstacle and confirm attacks resume. Repeat with terrain, view range, mist and follow/patrol leash boundaries.
+- Add an ordinary hostile: verify training yields to combat, including when already attacking a dummy. Remove the hostile and verify training resumes.
+- Check damage and normal skeleton attack XP; this feature must not multiply rewards or attack speed.
+- Try a wolf, wild skeleton, and ordinary enemy: confirm their AI is unchanged.
+- Transfer skeleton ownership to an unmodded or disabled peer and back: expect vanilla behavior there and training only under the enabled owner. Test an unmodded dedicated server and optional modded Linux owner.
+- Toggle stamina and caster XP independently, with training both enabled and disabled. Confirm existing behavior remains independent.
+- Inspect BepInEx logs for patch errors. Static and simulated-API checks do not establish actual Harmony/Unity compatibility.

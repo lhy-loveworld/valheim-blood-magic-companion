@@ -3,7 +3,7 @@ using System.Reflection;
 using BepInEx;
 using HarmonyLib;
 
-[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
 namespace BloodMagicCompanion
 {
     [BepInPlugin(Id, "Blood Magic Companion", Version)]
@@ -12,7 +12,7 @@ namespace BloodMagicCompanion
     public sealed class Plugin : BaseUnityPlugin
     {
         public const string Id = "local.valheim.bloodmagiccompanion";
-        public const string Version = "1.1.0";
+        public const string Version = "1.2.0";
         private Harmony harmony;
 
         private void Awake()
@@ -24,6 +24,8 @@ namespace BloodMagicCompanion
                 "Replace Blood Magic eitr with stamina; keep original health costs. Restart required.").Value;
             bool xp = Config.Bind("CasterXP", "Enabled", true,
                 "Redirect shield-break XP to the caster when the simulation owner and caster support it. Restart required.").Value;
+            bool training = Config.Bind("Summons", "AttackTrainingDummy", false,
+                "Allow owned summoned skeletons to attack T.W.I.G. when no ordinary enemy is available. The skeleton simulation owner needs this enabled. Restart required.").Value;
             StaminaCosts.Configure(Config, Logger);
             CasterXP.Configure(Config, Logger);
             harmony = new Harmony(Id);
@@ -31,15 +33,18 @@ namespace BloodMagicCompanion
             {
                 if (stamina) StaminaCosts.Patch(harmony);
                 if (xp) CasterXP.Patch(harmony);
+                if (training) SummonTraining.Patch(harmony);
                 // Activate only after every requested patch has installed successfully.
                 StaminaCosts.Active = stamina;
+                SummonTraining.Active = training;
                 CasterXP.SetEnabled(xp);
                 Logger.LogInfo("Blood Magic Companion " + Version + " loaded. StaminaCosts=" + stamina +
-                    "; CasterXP=" + xp + ". Server and other clients are optional.");
+                    "; CasterXP=" + xp + "; AttackTrainingDummy=" + training + ". Server and other clients are optional.");
             }
             catch (Exception error)
             {
                 StaminaCosts.Active = false;
+                SummonTraining.Active = false;
                 CasterXP.SetEnabled(false);
                 harmony.UnpatchSelf();
                 Logger.LogError("Could not install all requested patches; vanilla behavior retained. " + error);
@@ -49,6 +54,7 @@ namespace BloodMagicCompanion
         private void OnDestroy()
         {
             StaminaCosts.Active = false;
+            SummonTraining.Active = false;
             CasterXP.SetEnabled(false);
             if (harmony != null) harmony.UnpatchSelf();
         }

@@ -1,17 +1,18 @@
 # Blood Magic Companion
 
-Two configurable Blood Magic changes in one Valheim mod:
+Three configurable Blood Magic changes in one Valheim mod:
 
 - **Stamina-powered casting:** replace eitr with fixed stamina costs, scaled by Blood Magic skill, while preserving the original health cost.
 - **Caster shield XP:** credit Staff of Protection shield-break XP to the caster when the computer processing the break and the caster support the feature.
+- **Optional skeleton training:** summoned melee and archer skeletons can target T.W.I.G.; disabled by default.
 
-Both features can be switched off independently. One DLL, one configuration file.
+All features can be switched off independently. One DLL, one configuration file.
 
-**Status:** experimental release 1.1.0. Compiled against Valheim 1.0.16 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
+**Status:** experimental release 1.2.0. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
 
 ## Install and upgrade
 
-Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.1.0 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.1.0.zip. Avoid enabling both a local import and the public package at once.
+Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.2.0 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.2.0.zip. Avoid enabling both a local import and the public package at once.
 
 For manual installation, replace BloodMagicCompanion.dll inside BepInEx/plugins with the new DLL. Keep only one copy. Close Valheim before updating.
 
@@ -45,7 +46,7 @@ These are conversion examples; each attack uses its actual configured base eitr 
 
 The tooltip shows the additional converted stamina, including current Blood Magic skill. It is added to any native stamina cost shown elsewhere. Eitr becomes zero; normal materials, ammunition, durability, and other conditions still apply.
 
-Applies only to the owning local player's Blood Magic attacks with positive base eitr cost. Self-killing attacks and already zero-eitr attacks are excluded. Elemental magic, melee, creature attacks, shield strength, and summon behavior are unchanged.
+Applies only to the owning local player's Blood Magic attacks with positive base eitr cost. Self-killing attacks and already zero-eitr attacks are excluded. Elemental magic, melee, creature attacks, shield strength, and summon behavior are unchanged by the stamina feature.
 
 Removing eitr also removes its food requirement. Pre-casting shields or summons and recovering stamina remains possible. This is a configurable alternative balance model, not vanilla difficulty parity.
 
@@ -73,6 +74,23 @@ The XP protocol intentionally matches **BloodMagicCasterXP 1.2.0**. A friend usi
 
 Capability is advertised only while caster XP is enabled. No mandatory-mod network handshake, forced version matching, or mod-version kick is added. Targeted remote rewards require known current ownership; disconnects, respawns, ownership transitions, or missing network data may drop rewards. There is no offline queue or delivery retry. Receipts have bounded duplicate protection; this is a cooperative mod, not an anti-cheat system. Other mods replacing shield, cost, or network methods may interfere.
 
+## Summoned skeletons and T.W.I.G.
+
+To enable training, set this in the config and restart:
+
+```ini
+[Summons]
+AttackTrainingDummy = true
+```
+
+The default is **false**, preserving vanilla AI. With it enabled, tamed `Skeleton_Friendly` summons can select the nearest visible living T.W.I.G. when vanilla finds no ordinary enemy. An existing living ordinary target also takes priority. The feature covers both melee and archer equipment.
+
+T.W.I.G. normally skips enemy selection, and its building-layer body can block the character visibility ray. This feature provides a skeleton-only fallback target and ignores only the selected dummy's own colliders for that ray. Other buildings, terrain, mist, view range, view angle, attack range, cooldowns, pathing and the native follow/patrol leash remain in effect. It does not change attack damage or XP amounts. Enabling it can make repeated training easier.
+
+**Only the computer currently simulating the skeleton applies this behavior.** That computer must run this version with the setting enabled. A client-only installation works for skeletons owned by that client; behavior returns to vanilla if ownership moves to an unmodded or disabled peer. No ownership is forced and no server installation, new network messages or mandatory-mod handshake is added. Other creatures and players retain their normal visibility behavior.
+
+This feature has executable tests with simulated game/physics APIs and static installed-game checks, but has **not been playtested in Unity or multiplayer**.
+
 ## Configuration
 
 File: local.valheim.bloodmagiccompanion.cfg. Settings apply at startup.
@@ -85,15 +103,16 @@ File: local.valheim.bloodmagiccompanion.cfg. Settings apply at startup.
 | StaminaCosts / ItemCostMultipliers | StaffShield=1;StaffSkeleton=1;StaffTroll=1 | Per-prefab multipliers on converted stamina only; range 0.01–100. Unlisted items use 1. |
 | StaminaCosts / ShowCostInTooltip | true | Show the converted stamina surcharge. |
 | CasterXP / Enabled | true | Enable caster-attributed shield-break XP independently. |
+| Summons / AttackTrainingDummy | false | Allow owned summoned skeletons to train on T.W.I.G. independently of the other features; restart required. |
 | Logging / Diagnostics | false | Log shield attribution and XP delivery. |
 
 Example: StaminaPerEitr=0.75 changes a 60-eitr spell to 45 stamina before skill scaling. StaffShield=1.2 makes shield conversion 20% more expensive without changing its original health cost. Use decimal points. Invalid settings fall back to defaults or ignore invalid item entries with a warning.
 
-HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.1.0. All configuration is local; it is not enforced on friends.
+HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.2.0. All configuration is local; it is not enforced on friends.
 
 ## Troubleshooting and removal
 
-Check BepInEx/LogOutput.log for Blood Magic Companion 1.1.0 loaded and both feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
+Check BepInEx/LogOutput.log for Blood Magic Companion 1.2.0 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
 
 Report game and mod versions, relevant configuration, other combat mods, and which computer processed the shield break. Share only relevant log excerpts after removing personal information.
 

@@ -9,6 +9,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="CostChecks.cs" />
     <Compile Include="XpChecks.cs" />
+    <Compile Include="SummonChecks.cs" />
+    <Compile Include="SummonStubs.cs" />
+    <Compile Include="../src/SummonTraining.cs" Link="SummonTraining.cs" />
     <Compile Include="../src/CostModel.cs" Link="CostModel.cs" />
     <Compile Include="../src/ReceiptLedger.cs" Link="ReceiptLedger.cs" />
   </ItemGroup>
