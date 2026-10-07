@@ -36,3 +36,12 @@ Enable Logging/Diagnostics to distinguish local reward, redirected reward, recei
 The 1.2.0 in-game report was melee and archer skeletons wandering without attacking T.W.I.G., despite the enabled setting and successful patch-install log. Asset inspection found Skeleton_Friendly uses faction Players (0); the 1.2.0 eligibility filter incorrectly required PlayerSpawned (11). The extracted-faction regression reproduced this exclusion before the fix.
 
 After importing 1.2.1, keep Summons/AttackTrainingDummy=true and restart. Confirm the log says 1.2.1 and AttackTrainingDummy=True, then repeat the open-ground melee and archer test from above. Verify actual attacks, ordinary-enemy priority and obstacle blocking. In multiplayer, test while a modded and enabled computer owns the skeleton. The offline regression establishes the faction fix, not the complete Unity behavior.
+
+## Lava immunity acceptance checks (1.3.0; not yet run)
+
+1. Close Valheim, update to 1.3.0, enable Summons/LavaDamageImmunity, restart, and confirm the loaded feature state and absence of patch errors in BepInEx logs. Test independently with AttackTrainingDummy disabled.
+2. Summon a melee skeleton and an archer. While your modded client simulates them, expose both to lava long enough to reach partial and full heat. Confirm no lava health loss and no new lava-applied Burning. Check that they still move/attack normally; pathfinding and lava slowdown are unchanged.
+3. Disable the setting and restart: verify vanilla lava damage returns. Re-enable and restart to confirm protection returns.
+4. With protection enabled, verify ordinary fire attacks, existing Burning, other combat damage, native summon expiry and boiling-ocean damage still apply. Players, wolves and wild skeletons must remain unaffected.
+5. In multiplayer, test transfer between two modded owners with the setting enabled, then an unmodded or disabled owner: protection follows the current owner and is not guaranteed on the latter. Include server ownership if applicable. Confirm no required-mod handshake, disconnects or duplicated damage.
+6. Record mod/game versions, ownership, settings and relevant logs. Do not infer live survival from the offline branch probes. Shield-XP verification is a separate pending task; this release does not change XP attribution.

@@ -3,7 +3,7 @@ using System.Reflection;
 using BepInEx;
 using HarmonyLib;
 
-[assembly: AssemblyVersion("1.2.1.0")]
+[assembly: AssemblyVersion("1.3.0.0")]
 namespace BloodMagicCompanion
 {
     [BepInPlugin(Id, "Blood Magic Companion", Version)]
@@ -12,7 +12,7 @@ namespace BloodMagicCompanion
     public sealed class Plugin : BaseUnityPlugin
     {
         public const string Id = "local.valheim.bloodmagiccompanion";
-        public const string Version = "1.2.1";
+        public const string Version = "1.3.0";
         private Harmony harmony;
 
         private void Awake()
@@ -26,6 +26,8 @@ namespace BloodMagicCompanion
                 "Redirect shield-break XP to the caster when the simulation owner and caster support it. Restart required.").Value;
             bool training = Config.Bind("Summons", "AttackTrainingDummy", false,
                 "Allow owned summoned skeletons to attack T.W.I.G. when no ordinary enemy is available. The skeleton simulation owner needs this enabled. Restart required.").Value;
+            bool lava = Config.Bind("Summons", "LavaDamageImmunity", false,
+                "Protect owned summoned skeletons from lava damage and lava-applied burning. Other fire damage and boiling ocean damage remain. The simulation owner needs this enabled. Restart required.").Value;
             StaminaCosts.Configure(Config, Logger);
             CasterXP.Configure(Config, Logger);
             harmony = new Harmony(Id);
@@ -34,17 +36,20 @@ namespace BloodMagicCompanion
                 if (stamina) StaminaCosts.Patch(harmony);
                 if (xp) CasterXP.Patch(harmony);
                 if (training) SummonTraining.Patch(harmony);
+                if (lava) SummonLavaProtection.Patch(harmony);
                 // Activate only after every requested patch has installed successfully.
                 StaminaCosts.Active = stamina;
                 SummonTraining.Active = training;
+                SummonLavaProtection.Active = lava;
                 CasterXP.SetEnabled(xp);
                 Logger.LogInfo("Blood Magic Companion " + Version + " loaded. StaminaCosts=" + stamina +
-                    "; CasterXP=" + xp + "; AttackTrainingDummy=" + training + ". Server and other clients are optional.");
+                    "; CasterXP=" + xp + "; AttackTrainingDummy=" + training + "; LavaDamageImmunity=" + lava + ". Server and other clients are optional.");
             }
             catch (Exception error)
             {
                 StaminaCosts.Active = false;
                 SummonTraining.Active = false;
+                SummonLavaProtection.Active = false;
                 CasterXP.SetEnabled(false);
                 harmony.UnpatchSelf();
                 Logger.LogError("Could not install all requested patches; vanilla behavior retained. " + error);
@@ -55,6 +60,7 @@ namespace BloodMagicCompanion
         {
             StaminaCosts.Active = false;
             SummonTraining.Active = false;
+            SummonLavaProtection.Active = false;
             CasterXP.SetEnabled(false);
             if (harmony != null) harmony.UnpatchSelf();
         }

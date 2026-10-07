@@ -54,6 +54,7 @@ public class Character:UnityEngine.Component
 {
     public enum Faction { Players=0, Undead=3, PlayerSpawned=11, TrainingDummy=12 }
     public bool Owner=true, Tamed=true, Dead;
+    public float m_lavaHeatLevel, m_ashlandsOceanHeatLevel;
     public Faction Team=Faction.Players;
     public static readonly List<Character> All = new List<Character>();
     public bool IsOwner() { return Owner; }
@@ -80,6 +81,8 @@ namespace HarmonyLib
     }
     public static class AccessTools
     {
+        public static FieldInfo Field(Type t,string name)
+        { return t.GetField(name,BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance|BindingFlags.Static); }
         public static MethodInfo Method(Type t,string name,Type[] args=null)
         {
             const BindingFlags f=BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static|BindingFlags.Instance;

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0
+
+- Add independent `Summons/LavaDamageImmunity`, disabled by default. Enable and restart to protect summoned melee and archer skeletons from lava heat damage and lava-applied burning on their simulation owner.
+- Preserve ordinary fire, boiling-ocean damage, summon lifetime, pathfinding and all other features. Mixed unmodded peers remain supported; protection requires the current simulation owner to enable it.
+- Add 36 simulated lava eligibility and emitted-branch assertions plus installed-game contract validation. Live lava survival and multiplayer ownership-transfer testing remain pending.
+
 ## 1.2.1
 
 - Fix T.W.I.G. training excluding vanilla summoned skeletons: Skeleton_Friendly uses faction Players (0), not PlayerSpawned (11).

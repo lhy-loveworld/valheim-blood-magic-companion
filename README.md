@@ -1,18 +1,20 @@
 # Blood Magic Companion
 
-Three configurable Blood Magic changes in one Valheim mod:
+Four configurable Blood Magic changes in one Valheim mod:
 
 - **Stamina-powered casting:** replace eitr with fixed stamina costs, scaled by Blood Magic skill, while preserving the original health cost.
 - **Caster shield XP:** credit Staff of Protection shield-break XP to the caster when the computer processing the break and the caster support the feature.
 - **Optional skeleton training:** summoned melee and archer skeletons can target T.W.I.G.; disabled by default.
 
+- **Optional skeleton lava immunity:** protect summoned melee and archer skeletons from lava damage and lava-applied burning; disabled by default.
+
 All features can be switched off independently. One DLL, one configuration file.
 
-**Status:** experimental release 1.2.1. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
+**Status:** experimental release 1.3.0. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
 
 ## Install and upgrade
 
-Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.2.1 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.2.1.zip. Avoid enabling both a local import and the public package at once.
+Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.3.0 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.3.0.zip. Avoid enabling both a local import and the public package at once.
 
 For manual installation, replace BloodMagicCompanion.dll inside BepInEx/plugins with the new DLL. Keep only one copy. Close Valheim before updating.
 
@@ -93,6 +95,23 @@ T.W.I.G. normally skips enemy selection, and its building-layer body can block t
 
 This feature has executable tests with simulated game/physics APIs and static installed-game checks, but has **not been playtested in Unity or multiplayer**.
 
+## Summoned skeletons and lava
+
+Set this in the config and restart:
+
+```ini
+[Summons]
+LavaDamageImmunity = true
+```
+
+Default **false**. When enabled, living tamed `Skeleton_Friendly` summons (both melee and archers) skip both stages of lava heat damage and the burning those stages apply. This is independent of training, casting costs and shield XP. Other creatures and players are unaffected.
+
+Ordinary fire attacks, already-active Burning effects, boiling-ocean damage, other combat damage and the native summon lifetime remain. This does not change pathfinding, lava slowdown or terrain behavior: skeletons may still walk into lava, but the covered lava damage is skipped.
+
+**The computer currently simulating the skeleton must have this setting enabled.** The server and other clients may remain unmodded, but protection stops if ownership moves to an unmodded or disabled computer. For protection across ownership transfers, enable it on every computer that may simulate the summons, including the server if it does so. The mod does not force ownership or require all peers to install it.
+
+Offline branch and installed-game contract checks pass; actual Unity/Harmony loading and multiplayer lava survival still need playtesting.
+
 ## Configuration
 
 File: local.valheim.bloodmagiccompanion.cfg. Settings apply at startup.
@@ -106,15 +125,16 @@ File: local.valheim.bloodmagiccompanion.cfg. Settings apply at startup.
 | StaminaCosts / ShowCostInTooltip | true | Show the converted stamina surcharge. |
 | CasterXP / Enabled | true | Enable caster-attributed shield-break XP independently. |
 | Summons / AttackTrainingDummy | false | Allow owned summoned skeletons to train on T.W.I.G. independently of the other features; restart required. |
+| Summons / LavaDamageImmunity | false | Skip owned summoned skeleton lava damage and lava-applied burning; ordinary fire and boiling ocean remain. Restart required. |
 | Logging / Diagnostics | false | Log shield attribution and XP delivery. |
 
 Example: StaminaPerEitr=0.75 changes a 60-eitr spell to 45 stamina before skill scaling. StaffShield=1.2 makes shield conversion 20% more expensive without changing its original health cost. Use decimal points. Invalid settings fall back to defaults or ignore invalid item entries with a warning.
 
-HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.2.1. All configuration is local; it is not enforced on friends.
+HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.3.0. All configuration is local; it is not enforced on friends.
 
 ## Troubleshooting and removal
 
-Check BepInEx/LogOutput.log for Blood Magic Companion 1.2.1 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
+Check BepInEx/LogOutput.log for Blood Magic Companion 1.3.0 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
 
 Report game and mod versions, relevant configuration, other combat mods, and which computer processed the shield break. Share only relevant log excerpts after removing personal information.
 

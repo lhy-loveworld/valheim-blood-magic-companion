@@ -8,7 +8,7 @@ With the .NET 8 SDK:
 dotnet run --project tests/Checks.csproj --configuration Release
 ```
 
-This executes the same cost, receipt, routing, and summon checks used by the production code. Summon checks execute the production selection, ray-filter and transpiler code with simulated Unity/Harmony APIs, including an emitted-IL stack probe. They do not load Unity or real Harmony. GitHub Actions runs this command on pushes and pull requests, plus source/package metadata validation. The workflow has no publishing credentials and does not publish anything.
+This executes the same cost, receipt, routing, summon and lava checks used by the production code. Summon checks execute the production selection, ray-filter and transpiler code with simulated Unity/Harmony APIs, including an emitted-IL stack probe. They do not load Unity or real Harmony. GitHub Actions runs this command on pushes and pull requests, plus source/package metadata validation. The workflow has no publishing credentials and does not publish anything.
 
 ## Build the plugin on Windows
 
@@ -30,6 +30,7 @@ In Windows PowerShell from the repository root:
 .\scripts\Validate-Costs.ps1 -GameManaged 'C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed' -BepInExCore 'C:\path\to\profile\BepInEx\core' -PluginDll '.\build\BloodMagicCompanion.dll'
 .\scripts\Validate-XP.ps1 -GameManaged 'C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed' -BepInExCore 'C:\path\to\profile\BepInEx\core' -PluginDll '.\build\BloodMagicCompanion.dll'
 .\scripts\Validate-Summons.ps1 -GameManaged 'C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed' -BepInExCore 'C:\path\to\profile\BepInEx\core' -PluginDll '.\build\BloodMagicCompanion.dll'
+.\scripts\Validate-Lava.ps1 -GameManaged 'C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed' -BepInExCore 'C:\path\to\profile\BepInEx\core' -PluginDll '.\build\BloodMagicCompanion.dll'
 .\scripts\Validate-Combined.ps1 -BepInExCore 'C:\path\to\profile\BepInEx\core' -PluginDll '.\build\BloodMagicCompanion.dll'
 ```
 

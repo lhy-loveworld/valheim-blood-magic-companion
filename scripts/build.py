@@ -31,7 +31,7 @@ subprocess.run([str(args.csc), '/noconfig', '/nologo', '/target:library', '/opti
     + [compiler_path(path) for path in sorted(source.glob('*.cs'))], check=True)
 checks = args.output / 'BloodMagicCompanionChecks.exe'
 subprocess.run([str(args.csc), '/nologo', '/target:exe', '/optimize+', '/warnaserror+',
-    '/out:' + compiler_path(checks), compiler_path(source / 'CostModel.cs'), compiler_path(source / 'ReceiptLedger.cs'), compiler_path(source / 'SummonTraining.cs')]
+    '/out:' + compiler_path(checks), compiler_path(source / 'CostModel.cs'), compiler_path(source / 'ReceiptLedger.cs'), compiler_path(source / 'SummonTraining.cs'), compiler_path(source / 'SummonLavaProtection.cs')]
     + [compiler_path(path) for path in sorted(tests.glob('*.cs'))], check=True)
 if args.dotnet:
     import json

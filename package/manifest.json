@@ -1,8 +1,8 @@
 {
   "name": "BloodMagicCompanion",
-  "version_number": "1.2.1",
+  "version_number": "1.3.0",
   "website_url": "https://github.com/lhy-loveworld/valheim-blood-magic-companion",
-  "description": "Configurable stamina-powered Blood Magic, original health costs, caster shield XP, and optional summoned-skeleton T.W.I.G. training. Server optional; creature-owner and mixed-client limitations documented.",
+  "description": "Configurable stamina-powered Blood Magic, caster shield XP, skeleton T.W.I.G. training and optional summoned-skeleton lava immunity. Server optional; creature-owner and mixed-client limitations documented.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2350"
   ]
