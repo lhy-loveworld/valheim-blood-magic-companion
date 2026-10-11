@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.1
+
+- Remove the Trollstav XP cooldown and MinimumInterval setting. Each qualifying damage event can award XP, including multiple enemies in one area attack and rapid successive hits.
+- Keep duplicate network-report protection, caster attribution, eligibility checks and the configurable XP Factor. Existing MinimumInterval entries are ignored.
+- Source update; installable packages are pending local rebuild and validation.
+
 ## 1.4.0
 
 - Add independent TrollXP/Enabled (default false), Factor (0.5) and MinimumInterval (1 second per troll).

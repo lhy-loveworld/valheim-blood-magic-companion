@@ -38,7 +38,7 @@ Assert ($prefix.Contains('TrollXpPolicy::Eligible') -and $prefix.Contains('BaseA
 Assert ($postfix.Contains('TrollXpPolicy::LostHealth') -and $postfix.Contains('TrollXP::Report')) 'Reward requires actual health loss'
 $award = ($feature.Methods | Where-Object Name -eq 'Award').Body.Instructions -join [Environment]::NewLine
 Assert ($award.Contains('Player::m_localPlayer') -and $award.Contains('Character::IsOwner') -and $award.Contains('Skills::RaiseSkill')) 'Only local owning player receives XP'
-Assert ($award.Contains('TrollXpCooldown::Accept') -and $award.Contains('CostModel::Setting')) 'Caster cooldown and validated local rate apply'
+Assert (!$award.Contains('TrollXpCooldown') -and !$award.Contains('realtimeSinceStartup') -and $award.Contains('CostModel::Setting')) 'Each eligible event uses validated caster factor without time throttling'
 $receive = ($feature.Methods | Where-Object Name -eq 'Receive').Body.Instructions -join [Environment]::NewLine
 Assert ($receive.Contains('ReceiptLedger::IsAuthorizedSender') -and $receive.Contains('ReceiptLedger::Accept') -and $receive.Contains('ZDO::GetPrefab')) 'Remote sender, duplicate and troll-prefab validation'
 $report = ($feature.Methods | Where-Object Name -eq 'Report').Body.Instructions -join [Environment]::NewLine

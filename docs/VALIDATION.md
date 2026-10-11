@@ -1,4 +1,12 @@
-# Validation - release 1.4.0
+# Validation - version 1.4.1 source update
+
+The Trollstav cooldown and MinimumInterval setting have been removed. Every qualifying damage event is eligible for its own reward; duplicate network reports remain rejected.
+
+The current source has updated multi-hit/receipt regression checks and a static hook check that rejects time throttling. See GitHub Actions for the source-only test result. The 1.4.1 plugin has **not yet been compiled or checked against installed game assemblies**, and no 1.4.1 installable package has been built. The local command runner currently rejects the chat's Linux-style project path on Windows. Restore a valid Windows project path, rebuild, rerun all installed-game validators and replace this status with the new build hash before packaging.
+
+The record below describes **1.4.0 only**. Its DLL hash, counts and results do not validate 1.4.1. Unity and multiplayer playtesting remain pending.
+
+# Historical validation - release 1.4.0
 
 Validated on 2026-10-11 against installed Valheim 1.0.17 (Steam build 25730771), using BepInExPack 5.4.2350 references. The installed game has updated since the 1.1.0 mod release; static contracts were rechecked.
 

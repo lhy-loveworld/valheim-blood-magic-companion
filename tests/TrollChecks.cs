@@ -23,27 +23,20 @@ internal static class TrollChecks
         Check(!TrollXpPolicy.LostHealth(100,110), "healing");
         Check(!TrollXpPolicy.LostHealth(float.NaN,0), "invalid prior health");
         Check(!TrollXpPolicy.LostHealth(100,float.NegativeInfinity), "invalid resulting health");
-        TrollXpCooldown gate=new TrollXpCooldown();
-        Check(gate.Accept("trollA",10,1), "first hit");
-        Check(!gate.Accept("trollA",10,1), "area hit cannot multiply reward");
-        Check(!gate.Accept("trollA",10.9,1), "other victim owner uses same cooldown");
-        Check(gate.Accept("trollB",10,1), "second troll independent");
-        Check(gate.Accept("trollA",11,1), "next eligible hit");
-        Check(!gate.Accept("trollA",5,1), "clock rollback rejected");
-        Check(!gate.Accept("trollC",double.NaN,1), "invalid clock");
-        Check(!gate.Accept("trollC",12,0), "unsafe interval");
-        Check(!gate.Accept("trollC",12,float.NaN), "NaN interval");
-        Check(!gate.Accept("",12,1), "missing identity");
-        gate.Clear(); Check(gate.Accept("trollA",0,1), "new session clears clock and identity");
         ReceiptLedger ledger=new ReceiptLedger(4); string token=Guid.NewGuid().ToString("N");
         Check(ledger.Accept(8,token,1), "remote event first receipt");
         Check(!ledger.Accept(8,token,1), "duplicate remote event");
+        // Distinct damage events must all survive receipt validation, with no elapsed-time requirement.
+        Check(ledger.Accept(8,Guid.NewGuid().ToString("N"),1), "second enemy in same area attack rewarded");
+        Check(ledger.Accept(8,Guid.NewGuid().ToString("N"),1), "rapid follow-up damage rewarded");
+        Check(ledger.Accept(9,Guid.NewGuid().ToString("N"),1), "simultaneous event from another victim owner rewarded");
+        Check(!ledger.Accept(8,token,1), "original event remains deduplicated after other hits");
         Check(!ReceiptLedger.IsAuthorizedSender(8,9), "old victim owner rejected");
         Check(ReceiptLedger.IsAuthorizedSender(9,9), "current victim owner accepted");
         Check(RewardRouting.Select(true,false,false,0,9,true)==RewardRoute.Vanilla,"unmodded caster receives no custom event");
         Check(RewardRouting.Select(true,false,true,0,0,false)==RewardRoute.LocalCaster,"local caster needs no network router");
         Check(RewardRouting.Select(true,false,false,3,9,true)==RewardRoute.RemoteCaster,"capable caster receives targeted event");
-        Console.WriteLine("PASS: " + count + " Trollstav eligibility, health-loss, cooldown and routing assertions (not Unity).");
+        Console.WriteLine("PASS: " + count + " Trollstav eligibility, health-loss, multi-hit receipt and routing assertions (not Unity).");
     }
     private static bool Eligible(bool[] b) { return TrollXpPolicy.Eligible(b[0],b[1],b[2],b[3],b[4],b[5],b[6],b[7],"Troll_Summoned(Clone)"); }
 }

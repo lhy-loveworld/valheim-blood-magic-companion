@@ -12,11 +12,11 @@ Five configurable Blood Magic changes in one Valheim mod:
 
 All features can be switched off independently. One DLL, one configuration file.
 
-**Status:** experimental release 1.4.0. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
+**Status:** experimental 1.4.1 source update. Local DLL compilation and packaging are pending; see docs/VALIDATION.md. GitHub Actions checks source metadata and standalone logic, without loading Unity. Actual casting and multiplayer remain unverified. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
 
 ## Install and upgrade
 
-Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.4.0 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.4.0.zip. Avoid enabling both a local import and the public package at once.
+Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Version 1.4.1 source is available; its installable ZIP is pending a local rebuild. After it is packaged and published, update the existing **qwertyzxcv-BloodMagicCompanion** package, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.4.1.zip. Avoid enabling both a local import and the public package at once.
 
 For manual installation, replace BloodMagicCompanion.dll inside BepInEx/plugins with the new DLL. Keep only one copy. Close Valheim before updating.
 
@@ -122,12 +122,11 @@ Enable this and restart, then summon fresh trolls:
 [TrollXP]
 Enabled = true
 Factor = 0.5
-MinimumInterval = 1
 ```
 
 The toggle defaults to **false** and is independent of CasterXP, stamina conversion, training and lava protection. When enabled, a newly summoned Trollstav troll carries its original caster's identity. Successful health damage to enemies, including the arrival explosion when attributed to that troll, can award Blood Magic XP to that caster. Merely casting, misses, fully absorbed hits, players, tames, training dummies, the troll itself and scenery do not generate rewards. Ordinary wild trolls are excluded. Damage-over-time only qualifies if the game retains the tracked troll as attacker.
 
-Factor is a skill-gain factor, not whole skill levels. Default 0.5 uses the same factor scale as vanilla skeleton rewards. MinimumInterval defaults to one second per troll and is enforced on the caster across all targets/reporting computers, so one area attack does not multiply XP for each enemy. Separate trolls have independent cooldowns. No delayed reward is queued for suppressed hits. The caster's Factor (0.01-10) and MinimumInterval (0.25-60 seconds) apply; invalid values fall back to defaults. Logging/Diagnostics logs tracking and successful local awards.
+Factor is a skill-gain factor, not whole skill levels. Default 0.5 uses the same factor scale as vanilla skeleton rewards. Every qualifying damage event can award XP: hitting several enemies in one area attack or landing rapid successive hits can grant several rewards. There is no per-troll cooldown. Duplicate copies of the same network report are still rejected. The caster's Factor (0.01-10) applies; invalid values fall back to the default. The old MinimumInterval setting is ignored and may be removed from existing configuration files. Logging/Diagnostics logs tracking and successful local awards.
 
 **Multiplayer:** the caster needs this enabled when summoning, and the computer processing the damaged enemy needs it enabled to report damage. This is the victim's simulation owner, which can differ from the troll's owner. XP is applied only on the actual caster's client, never on another computer's copy of that player. The server and other clients may remain unmodded, but damage processed by an unmodded or disabled peer produces no extra XP. There is no required-mod handshake. Ownership changes do not reassign the caster; missing/stale network data can drop reports. This cooperative protocol is not anti-cheat protection.
 
@@ -149,16 +148,15 @@ File: local.valheim.bloodmagiccompanion.cfg. Settings apply at startup.
 | Summons / LavaDamageImmunity | false | Skip owned summoned skeleton lava damage and lava-applied burning; ordinary fire and boiling ocean remain. Restart required. |
 | TrollXP / Enabled | false | Award Blood Magic XP for tracked summoned troll damage to enemies. Restart and resummon required. |
 | TrollXP / Factor | 0.5 | Skill gain factor per accepted event; range 0.01-10. |
-| TrollXP / MinimumInterval | 1 | Seconds between rewards per troll; range 0.25-60. |
 | Logging / Diagnostics | false | Log shield attribution, Trollstav tracking and XP delivery. |
 
 Example: StaminaPerEitr=0.75 changes a 60-eitr spell to 45 stamina before skill scaling. StaffShield=1.2 makes shield conversion 20% more expensive without changing its original health cost. Use decimal points. Invalid settings fall back to defaults or ignore invalid item entries with a warning.
 
-HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.4.0. All configuration is local; it is not enforced on friends.
+HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.4.1. All configuration is local; it is not enforced on friends.
 
 ## Troubleshooting and removal
 
-Check BepInEx/LogOutput.log for Blood Magic Companion 1.4.0 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
+Check BepInEx/LogOutput.log for Blood Magic Companion 1.4.1 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
 
 Report game and mod versions, relevant configuration, other combat mods, and which computer processed the shield break. Share only relevant log excerpts after removing personal information.
 

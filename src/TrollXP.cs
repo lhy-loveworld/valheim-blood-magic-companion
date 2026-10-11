@@ -10,15 +10,12 @@ namespace BloodMagicCompanion
         internal const string RpcName = "BloodMagicCompanion_TrollHit_v1";
         internal static readonly int ProtocolHash = (Plugin.Id + ".trollXp.v1").GetStableHashCode();
         private static readonly ReceiptLedger receipts = new ReceiptLedger(4096);
-        private static readonly TrollXpCooldown cooldown = new TrollXpCooldown();
-        private static ConfigEntry<float> factorSetting, intervalSetting;
+        private static ConfigEntry<float> factorSetting;
         private static bool ready;
         internal static void Configure(ConfigFile config)
         {
             factorSetting = config.Bind("TrollXP", "Factor", 0.5f,
                 "Blood Magic skill gain factor per accepted damage event (not whole skill levels). Range 0.01-10. Caster setting applies. Restart required.");
-            intervalSetting = config.Bind("TrollXP", "MinimumInterval", 1f,
-                "Minimum seconds between XP rewards from the same troll, across all targets. Range 0.25-60. Caster setting applies. Restart required.");
         }
         internal static void Patch(Harmony harmony)
         {
@@ -26,7 +23,7 @@ namespace BloodMagicCompanion
                 harmony.CreateClassProcessor(type).Patch();
         }
         internal static void SetEnabled(bool enabled)
-        { ready = enabled; receipts.Clear(); cooldown.Clear(); Advertise(Player.m_localPlayer); }
+        { ready = enabled; receipts.Clear(); Advertise(Player.m_localPlayer); }
         internal static void Advertise(Player player)
         {
             if (player == null) return;
@@ -112,8 +109,7 @@ namespace BloodMagicCompanion
             // Never call RaiseSkill on another peer's Player replica.
             if (!ready || player == null || player != Player.m_localPlayer || !player.IsOwner()) return;
             Skills skills = player.GetSkills();
-            float interval = CostModel.Setting(intervalSetting.Value, 0.25f, 60f, 1f);
-            if (skills == null || !cooldown.Accept(troll.ToString(), Time.realtimeSinceStartup, interval)) return;
+            if (skills == null) return;
             float factor = CostModel.Setting(factorSetting.Value, 0.01f, 10f, 0.5f);
             skills.RaiseSkill(Skills.SkillType.BloodMagic, factor);
             CasterXP.Trace("Awarded Trollstav Blood Magic XP to local caster, factor " + factor + ", troll " + troll);
@@ -141,7 +137,7 @@ namespace BloodMagicCompanion
         private static class RegisterProtocol
         {
             private static void Postfix(ZRoutedRpc __instance)
-            { receipts.Clear(); cooldown.Clear(); __instance.Register<ZPackage>(RpcName, Receive); }
+            { receipts.Clear(); __instance.Register<ZPackage>(RpcName, Receive); }
         }
     }
 }
