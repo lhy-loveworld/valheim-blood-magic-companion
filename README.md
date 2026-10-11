@@ -1,6 +1,6 @@
 # Blood Magic Companion
 
-Four configurable Blood Magic changes in one Valheim mod:
+Five configurable Blood Magic changes in one Valheim mod:
 
 - **Stamina-powered casting:** replace eitr with fixed stamina costs, scaled by Blood Magic skill, while preserving the original health cost.
 - **Caster shield XP:** credit Staff of Protection shield-break XP to the caster when the computer processing the break and the caster support the feature.
@@ -8,13 +8,15 @@ Four configurable Blood Magic changes in one Valheim mod:
 
 - **Optional skeleton lava immunity:** protect summoned melee and archer skeletons from lava damage and lava-applied burning; disabled by default.
 
+- **Optional Trollstav XP:** summoned troll damage to enemies can award Blood Magic XP to the original caster; disabled by default.
+
 All features can be switched off independently. One DLL, one configuration file.
 
-**Status:** experimental release 1.3.0. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
+**Status:** experimental release 1.4.0. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. Offline arithmetic, routing, and static checks pass. Unity loading, actual casting, and multiplayer have not been playtested. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
 
 ## Install and upgrade
 
-Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.3.0 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.3.0.zip. Avoid enabling both a local import and the public package at once.
+Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Update the existing **qwertyzxcv-BloodMagicCompanion** package after 1.4.0 is published, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.4.0.zip. Avoid enabling both a local import and the public package at once.
 
 For manual installation, replace BloodMagicCompanion.dll inside BepInEx/plugins with the new DLL. Keep only one copy. Close Valheim before updating.
 
@@ -112,6 +114,25 @@ Ordinary fire attacks, already-active Burning effects, boiling-ocean damage, oth
 
 Offline branch and installed-game contract checks pass; actual Unity/Harmony loading and multiplayer lava survival still need playtesting.
 
+## Trollstav Blood Magic XP
+
+Enable this and restart, then summon fresh trolls:
+
+```ini
+[TrollXP]
+Enabled = true
+Factor = 0.5
+MinimumInterval = 1
+```
+
+The toggle defaults to **false** and is independent of CasterXP, stamina conversion, training and lava protection. When enabled, a newly summoned Trollstav troll carries its original caster's identity. Successful health damage to enemies, including the arrival explosion when attributed to that troll, can award Blood Magic XP to that caster. Merely casting, misses, fully absorbed hits, players, tames, training dummies, the troll itself and scenery do not generate rewards. Ordinary wild trolls are excluded. Damage-over-time only qualifies if the game retains the tracked troll as attacker.
+
+Factor is a skill-gain factor, not whole skill levels. Default 0.5 uses the same factor scale as vanilla skeleton rewards. MinimumInterval defaults to one second per troll and is enforced on the caster across all targets/reporting computers, so one area attack does not multiply XP for each enemy. Separate trolls have independent cooldowns. No delayed reward is queued for suppressed hits. The caster's Factor (0.01-10) and MinimumInterval (0.25-60 seconds) apply; invalid values fall back to defaults. Logging/Diagnostics logs tracking and successful local awards.
+
+**Multiplayer:** the caster needs this enabled when summoning, and the computer processing the damaged enemy needs it enabled to report damage. This is the victim's simulation owner, which can differ from the troll's owner. XP is applied only on the actual caster's client, never on another computer's copy of that player. The server and other clients may remain unmodded, but damage processed by an unmodded or disabled peer produces no extra XP. There is no required-mod handshake. Ownership changes do not reassign the caster; missing/stale network data can drop reports. This cooperative protocol is not anti-cheat protection.
+
+Existing trolls summoned before enabling/upgrading are untracked: summon new ones. Attribution uses the caster's current network character identity; after death, logout or a new session, resummon if that identity changes. The caster must be present and resolvable on the damage-processing computer. Troll hostility, damage, lifetime and targeting remain vanilla. This feature has not been playtested in Unity or multiplayer.
+
 ## Configuration
 
 File: local.valheim.bloodmagiccompanion.cfg. Settings apply at startup.
@@ -126,15 +147,18 @@ File: local.valheim.bloodmagiccompanion.cfg. Settings apply at startup.
 | CasterXP / Enabled | true | Enable caster-attributed shield-break XP independently. |
 | Summons / AttackTrainingDummy | false | Allow owned summoned skeletons to train on T.W.I.G. independently of the other features; restart required. |
 | Summons / LavaDamageImmunity | false | Skip owned summoned skeleton lava damage and lava-applied burning; ordinary fire and boiling ocean remain. Restart required. |
-| Logging / Diagnostics | false | Log shield attribution and XP delivery. |
+| TrollXP / Enabled | false | Award Blood Magic XP for tracked summoned troll damage to enemies. Restart and resummon required. |
+| TrollXP / Factor | 0.5 | Skill gain factor per accepted event; range 0.01-10. |
+| TrollXP / MinimumInterval | 1 | Seconds between rewards per troll; range 0.25-60. |
+| Logging / Diagnostics | false | Log shield attribution, Trollstav tracking and XP delivery. |
 
 Example: StaminaPerEitr=0.75 changes a 60-eitr spell to 45 stamina before skill scaling. StaffShield=1.2 makes shield conversion 20% more expensive without changing its original health cost. Use decimal points. Invalid settings fall back to defaults or ignore invalid item entries with a warning.
 
-HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.3.0. All configuration is local; it is not enforced on friends.
+HealthCosts/Enabled is retained only as a migration seed. To disable conversion now, use StaminaCosts/Enabled. There is no health-only mode in 1.4.0. All configuration is local; it is not enforced on friends.
 
 ## Troubleshooting and removal
 
-Check BepInEx/LogOutput.log for Blood Magic Companion 1.3.0 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
+Check BepInEx/LogOutput.log for Blood Magic Companion 1.4.0 loaded and the feature states. If loading is rejected, remove the old standalone plugins. If patch installation fails, the mod removes its patches instead of leaving a partially enabled feature.
 
 Report game and mod versions, relevant configuration, other combat mods, and which computer processed the shield break. Share only relevant log excerpts after removing personal information.
 

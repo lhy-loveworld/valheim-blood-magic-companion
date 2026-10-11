@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.0
+
+- Add independent TrollXP/Enabled (default false), Factor (0.5) and MinimumInterval (1 second per troll).
+- Track the caster at Trollstav summon time and reward actual health damage to enemies, including tracked arrival damage. Exclude players, tames, training dummies, scenery, misses and fully absorbed hits. Preserve troll combat behavior.
+- Apply rewards only to the caster's local player, with capability-gated reports from the victim's current simulation owner, duplicate protection and a caster-side per-troll cooldown. Unmodded peers remain compatible but cannot report extra XP.
+- Add policy regression tests and installed-game hook validation. Unity and multiplayer XP verification remain pending; resummon trolls after enabling/upgrading.
+
 ## 1.3.0
 
 - Add independent `Summons/LavaDamageImmunity`, disabled by default. Enable and restart to protect summoned melee and archer skeletons from lava heat damage and lava-applied burning on their simulation owner.

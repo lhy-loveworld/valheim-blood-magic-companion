@@ -26,7 +26,7 @@ namespace BloodMagicCompanion
         {
             log = logger;
             diagnostics = config.Bind("Logging", "Diagnostics", false,
-                "Log shield attribution and XP delivery for multiplayer troubleshooting.");
+                "Log shield attribution, Trollstav tracking and XP delivery for multiplayer troubleshooting.");
         }
         internal static void Patch(Harmony harmony)
         {

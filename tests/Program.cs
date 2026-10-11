@@ -5,6 +5,7 @@ internal static class Program
         CostChecks.Run();
         SummonChecks.Run();
         LavaChecks.Run();
+        TrollChecks.Run();
         return BloodMagicCompanion.XpChecks.Run();
     }
 }
