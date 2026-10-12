@@ -1,6 +1,6 @@
 # Publishing release 1.4.1
 
-**Build status:** source update only so far. Rebuild the DLL, rerun installed-game validators, update VALIDATION.md with the new hash and results, and package the ZIPs before following these upload instructions. Existing 1.4.0 ZIPs still contain the cooldown.
+**Build status:** 1.4.1 is compiled, locally validated and packaged. See VALIDATION.md for the DLL hash, results and unrun gameplay checks. Existing 1.4.0 ZIPs still contain the cooldown; use the 1.4.1 ZIPs below. Package creation does not publish to Thunderstore.
 
 The source repository is https://github.com/lhy-loveworld/valheim-blood-magic-companion. Thunderstore publication is a separate step. The README labels this combined release experimental and untested in-game.
 

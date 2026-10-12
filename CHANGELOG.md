@@ -4,7 +4,7 @@
 
 - Remove the Trollstav XP cooldown and MinimumInterval setting. Each qualifying damage event can award XP, including multiple enemies in one area attack and rapid successive hits.
 - Keep duplicate network-report protection, caster attribution, eligibility checks and the configurable XP Factor. Existing MinimumInterval entries are ignored.
-- Source update; installable packages are pending local rebuild and validation.
+- Built and packaged against Valheim 1.0.17: 349 executable assertions, 144 static assertions and six installed-prefab comparisons pass. Unity and multiplayer verification remain pending.
 
 ## 1.4.0
 

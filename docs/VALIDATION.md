@@ -1,10 +1,37 @@
-# Validation - version 1.4.1 source update
+# Validation - release 1.4.1
 
 The Trollstav cooldown and MinimumInterval setting have been removed. Every qualifying damage event is eligible for its own reward; duplicate network reports remain rejected.
 
-The current source has updated multi-hit/receipt regression checks and a static hook check that rejects time throttling. See GitHub Actions for the source-only test result. The 1.4.1 plugin has **not yet been compiled or checked against installed game assemblies**, and no 1.4.1 installable package has been built. The local command runner currently rejects the chat's Linux-style project path on Windows. Restore a valid Windows project path, rebuild, rerun all installed-game validators and replace this status with the new build hash before packaging.
+Rebuilt and validated on 2026-10-11 against installed Valheim 1.0.17 (Steam build 25730771), using BepInExPack 5.4.2350 references. The local source was synchronized with source commit 84760327453062ddaa7e6d839d301eb27c949fd8 from the original chat's recorded changes; its malformed workspace path no longer blocks this Windows build.
 
-The record below describes **1.4.0 only**. Its DLL hash, counts and results do not validate 1.4.1. Unity and multiplayer playtesting remain pending.
+| Check | Result |
+| --- | --- |
+| Plugin compilation with warnings treated as errors | Passed |
+| Executable stamina-cost assertions | 203 passed |
+| Executable receipt/ownership/mixed-client routing assertions | 34 passed |
+| Executable summon behavior and emitted-IL assertions with simulated APIs | 42 passed |
+| Executable lava eligibility and emitted-branch assertions with simulated APIs | 36 passed |
+| Executable Trollstav eligibility, health-loss, multi-hit receipt and routing assertions | 34 passed |
+| Static cost/game/compiled-hook assertions | 64 passed |
+| Static XP/game/compiled-hook assertions | 20 passed |
+| Static summon/game/compiled-hook assertions | 17 passed |
+| Static lava/game/compiled-hook assertions | 15 passed |
+| Static Trollstav/game/compiled-hook assertions | 19 passed |
+| Static combined-plugin integration assertions | 9 passed |
+| Installed-prefab fixture comparisons, rerun against installed assets | 6 passed |
+| Source versions, manifest, icon, license and distribution hygiene | Passed |
+| 1.4.1 Unity/Harmony loading and multiplayer gameplay | Not tested |
+
+Total: **349 executable assertions, 144 static assertions and six installed-prefab comparisons passed**. Removing the cooldown also removed its old tests; the replacement tests accept distinct area-hit and rapid-hit receipts while rejecting duplicate reports. The compiled Award hook has the local factor validation and no cooldown or elapsed-time check. These checks do not execute the live TrollXP hooks, actual RPC transport or player skill persistence.
+
+The Windows Framework compiler built the plugin and standalone checks; the installed .NET host ran the checks through build.py --dotnet. The build receipt binds the compiled C# fingerprint and DLL hash to version 1.4.1. The package script checks that receipt, archive integrity, exact runtime contents and the source distribution allowlist.
+
+Plugin SHA256: 2eaf24f2445d9b5f770a4f7e6fa3e8f103c09934b447bbd5fa14c3bb455bbeba.
+Game assembly SHA256: 25a0a107dce4d834c44c2b72d0eafd5cb7793933bda81816accfa1ea9543dace.
+
+The available profile log confirms that 1.4.0 loaded with all five features enabled, but contains no shield/Trollstav attribution messages. That is loading evidence for 1.4.0 only. No installed DLL, profile config, save or server installation was changed during this rebuild. The earlier shield-XP/level-1-popup investigation and live training, lava and Trollstav acceptance tests in TESTING.md remain pending.
+
+The historical record below describes **1.4.0 only**. Its DLL hash and counts are retained for provenance.
 
 # Historical validation - release 1.4.0
 

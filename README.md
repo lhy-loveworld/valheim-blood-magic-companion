@@ -12,11 +12,11 @@ Five configurable Blood Magic changes in one Valheim mod:
 
 All features can be switched off independently. One DLL, one configuration file.
 
-**Status:** experimental 1.4.1 source update. Local DLL compilation and packaging are pending; see docs/VALIDATION.md. GitHub Actions checks source metadata and standalone logic, without loading Unity. Actual casting and multiplayer remain unverified. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
+**Status:** experimental release 1.4.1. Compiled against Valheim 1.0.17 and BepInExPack 5.4.2350. All 349 executable assertions, 144 static assertions and six installed-prefab comparisons pass; see docs/VALIDATION.md. Actual casting and multiplayer remain unverified. The default conversion rate is a starting point for balancing, not a claim of equivalence to vanilla eitr.
 
 ## Install and upgrade
 
-Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. Version 1.4.1 source is available; its installable ZIP is pending a local rebuild. After it is packaged and published, update the existing **qwertyzxcv-BloodMagicCompanion** package, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.4.1.zip. Avoid enabling both a local import and the public package at once.
+Use r2modman or Thunderstore Mod Manager with BepInExPack_Valheim 5.4.2350 or newer. The 1.4.1 installable ZIPs are built and checked. After the public package is published, update the existing **qwertyzxcv-BloodMagicCompanion** package, then launch with **Start modded**. For a local ZIP, use **Settings → Profile → Import local mod** and select LocalMods-BloodMagicCompanion-1.4.1.zip. Avoid enabling both a local import and the public package at once.
 
 For manual installation, replace BloodMagicCompanion.dll inside BepInEx/plugins with the new DLL. Keep only one copy. Close Valheim before updating.
 
